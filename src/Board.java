@@ -24,15 +24,24 @@ public class Board extends JPanel implements KeyListener {
         random = new Random();
         generateApple();
         setBackground(new Color(21, 38, 20));
+        setLayout(null);
+        restartButton = new JButton("Restart");
+        restartButton.setBounds(230, 300, 80, 20);
+        restartButton.addActionListener(e -> restart());
+        restartButton.setFocusable(false);
+        this.add(restartButton);
     }
 
     public void paintBoard() {
-        JFrame frame = new JFrame("Board");
+        JFrame frame = new JFrame("Snake");
         frame.setSize(500, 600);
         frame.add(this);
         frame.setVisible(true);
         frame.setResizable(false);
         frame.addKeyListener(this);
+        remove(restartButton);
+        frame.setAlwaysOnTop(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     enum Direction {UP, DOWN, LEFT, RIGHT}
@@ -96,8 +105,6 @@ public class Board extends JPanel implements KeyListener {
         apple = new Apple(newAppleCoord);
     }
 
-
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -128,12 +135,13 @@ public class Board extends JPanel implements KeyListener {
         apple.render(g);
         g.setColor(Color.white);
         g.drawString("Score: " + score, 20, 50);
+        remove(restartButton);
         if (!gameState) {
             g.setColor(new Color(21, 38, 20));
             g.fillRect(150, 255, 240, 75);
             g.setColor(Color.white);
-            g.drawString("Sie haben verloren! | Score: " + score, 180, 290);
-            restart();
+            g.drawString("Sie haben verloren! | Score: " + score, 180, 280);
+            add(restartButton);
         }
     }
 
@@ -169,6 +177,7 @@ public class Board extends JPanel implements KeyListener {
                     direction = Direction.RIGHT;
                 }
                 break;
+            case 'e': restart();
         }
     }
 
