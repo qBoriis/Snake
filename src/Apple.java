@@ -1,10 +1,19 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Apple {
     private Coordinate coordinate;
-
+    private BufferedImage applePic;
     public Apple( Coordinate coordinate) {
         this.coordinate = coordinate;
+        try {
+            applePic = ImageIO.read(new File("appletransparent.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Coordinate getCoordinate() {
@@ -16,7 +25,6 @@ public class Apple {
     }
 
     public void render(Graphics g){
-        g.setColor(Color.red.darker());
-        g.fillRect(coordinate.getX() * 30 + 16, coordinate.getY() * 30 + 95, 30, 30);
+        g.drawImage(applePic, coordinate.getX() * 30 + 16, coordinate.getY() * 30 + 95,30, 30, null);
     }
 }
